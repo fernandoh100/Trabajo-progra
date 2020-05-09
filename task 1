@@ -66,8 +66,8 @@ for radian in rads:
     
     
 ###Twin
-#This method allows us to plot different values in axis y with respect to the same values represented in axis x. This helps us see how 
-two different variables vary with respect to the another.
+#This method allows us to plot different values in axis y with respect to the same values represented in axis x. 
+#This helps us see how two different variables vary with respect to the another.
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 fig = plt.figure()
