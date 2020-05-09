@@ -114,3 +114,321 @@ plt.ylim(0,10)
 plt.show()
 
 
+### matplotlib.pyplot.quiver
+
+# quiver([X, Y], U, V, [C], **kw)
+# The Quiver Plot constists of showing vectors as arrows at certain points given by (x, y).
+# With this method, we can partially represent vector fields such as the electric field by using arrows tangent to the vector field lines over a certain domain.
+# Some parameters of the Quiver Plot are the following:
+# 1. X, Y: they are the coordinates, (x, y), of the arrows.
+# 2. U, V: they define the direction of the arrows (x and y components of the vector).
+# 3. C: parameter that set the color of the arrows.
+
+# Electric Field Created By a Proton Monopole and a Proton-Electron Dipole
+
+# We import matplotlib.pyplot
+# We import numpy in order to make some computations and define the domain of the function
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# We define some variables
+
+# Nothe that this variables are not actually used in the example
+# This is because the method only works with the direction of the verctor field at each point
+# (But not with the margnitude)
+
+K = 9*(10**9) # Electrostatic Constant 
+e = 1.6 * (10**(-19)) # Elemental charge
+
+# Here we define a as half of Hydrogen's radius
+# This is becase we want the distance between the carges of the dipole to be tha radius and to make thins more realistic
+
+a = 6*(10**(-11)) # Half of Hydrogen's radius
+b = 2*a # Hydrogen's radius
+
+# Here we define two funtions: one for each of the two components of the vector (x and y)
+# Note that the parameter of the functions are not just x and y, but also q (the charge)
+
+def Ex(x, y, q):
+    return K*q*(x / (((x**2)+(y**2))**(3/2)))
+
+def Ey(x, y, q):
+    return K*q*(y / (((x**2)+(y**2))**(3/2)))
+
+# We define the domain of the graph
+
+x, y = np.meshgrid(np.linspace(-b, b, 30), np.linspace(-b, b, 30))
+
+# linspace function: creates sequences of evenly spaced values within a defined interval.
+# Essentally, you specify a starting point and an ending point of an interval, and then specify the total number of breakpoints you want within that interval (including the start and end points).
+
+# meshgrid function: returns coordinate matrices from coordinate vectors.
+
+# We can clearly see how  both modules are somehow interconected 
+
+# We make our graph with q = e
+
+plt.quiver(x, y, Ex(x, y, e), Ey(x, y, e), color='red')
+
+# We set the labels for the axes
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+# We set a title for the graph
+
+plt.title('Direction of the Electric Field (Monopole)')
+
+# We show or print our graph
+
+plt.show()
+
+# Here we actually have the same example but with the dipole
+
+def Edx(x, y, q1, q2):
+    return  K*(q1*((((x+a)**2 + y**2)**(-3/2))*(x+a)) - q2*(((x-a)**2 + y**2)**(-3/2)*(x-a)))
+
+def Edy(x, y, q1, q2):
+    return K*(q1*((((x+a)**2 + y**2)**(-3/2))*y) - q2*(((x-a)**2 + y**2)**(-3/2)*y))
+
+x, y = np.meshgrid(np.linspace(-b, b, 24), np.linspace(-b, b, 24))
+
+plt.quiver(x, y, Edx(x, y, e, e), Edy(x, y, e, e), color='rebeccapurple')
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+plt.title('Direction of the Electric Field (Dipole)')
+
+plt.show()
+
+# What is interesting of this secong graph, is that we can change the values of the charges intependently
+# In this way we can see how the field lines react when the charges are not equal
+
+x, y = np.meshgrid(np.linspace(-b, b, 30), np.linspace(-b, b, 30))
+
+plt.quiver(x, y, Edx(x, y, 5*e, e), Edy(x, y, 5*e, e), color='seagreen')
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+plt.title('Direction of the Electric Field (Dipole 2)')
+
+plt.show()
+
+
+### matplotlib.pyplot.contourf
+
+# contour([X, Y,] Z, [levels], **kwargs)
+# The contourf method is used to show filled contours of a 3-dimentional graph.
+# This method allows us to observe how a function changes through its domain in the xy-plane.
+# Some parameters of the contourf method are the following:
+# 1. X, Y: they are the coordinates of each Z value in the xy-plane.
+# 2. Z: the values in which the contours are plotted.
+# 3. Levels: dictates the number and position of the conotour regions.
+
+# Electric Potential Created By a Proton Monopole and a Proton-Electron Dipole
+
+# We import matplotlib.pyplot
+# We import numpy in order to make some computations and define the domain of the function
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# We define some variables
+
+K = 9*(10**9) # Electrostatic Constant 
+e = 1.6 * (10**(-19)) # Elemental charge
+a = 6*(10**(-11)) # Half of Hydrogen's radius
+b = 2*a # Hydrogen radius
+
+# We define our function of the electric potential dependent on x, y and q
+
+def V(x, y, q):
+    return (K*q) / (((x**2)+(y**2))**(1/2))  
+
+# We define the domain of the graph
+
+x, y = np.meshgrid(np.linspace(-b, b, 16), np.linspace(-b, b, 16))
+
+# linspace function: creates sequences of evenly spaced values within a defined interval.
+# Essentally, you specify a starting point and an ending point of an interval, and then specify the total number of breakpoints you want within that interval (including the start and end points).
+
+# meshgrid function: returns coordinate matrices from coordinate vectors.
+
+# Here we state that the function to be plotted (the potential) is defined by the z-axis of the graph
+# This is because the potential funtion is actually in three dimention:
+## Two of them are spatial dimentions (the xy-plane)
+## The other one is the magnitude of the potential (z-axis)
+# Here we have to be careful, as we have to define a value for q (the charge)
+
+z = V(x, y, e)
+
+# We make the graph
+
+plt.contourf(x, y, z, 35, cmap='plasma')
+
+# We set the labels for the axes
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+# We set a title for the graph
+
+plt.title('Level Curves of the Electric Potential (Monopole)')
+
+# We show the graph
+
+plt.show()
+
+# Here we actually have the same example but with the dipole
+
+def Vd(x, y, q1, q2):
+    return K*((q1 / ((((x+a)**2)+(y**2))**(1/2))) - (q2 / ((((x-a)**2)+(y**2))**(1/2))))
+
+x, y = np.meshgrid(np.linspace(-b, b, 20), np.linspace(-b, b, 20))
+
+z = Vd(x, y, e, e)
+
+plt.contourf(x, y, z, 30, cmap='magma')
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+plt.title('Level Curves of the Electric Potential (Dipole)')
+
+plt.show()
+
+# What is interesting of this secong graph, is that we can change the values of the charges intependently
+# In this way we can see how the field lines react when the charges are not equal
+
+x, y = np.meshgrid(np.linspace(-b, b, 20), np.linspace(-b, b, 20))
+
+z = Vd(x, y, 5*e, e)
+
+plt.contourf(x, y, z, 50, cmap='magma')
+
+plt.xlabel("X (m)")
+plt.ylabel("Y (m)")
+
+plt.title('Level Curves of the Electric Potential (Dipole 2)')
+
+plt.show()
+
+
+### Axes3D.plot_surface
+
+# plot_surface(self, X, Y, Z, \*args, norm=None, vmin=None, vmax=None, lightsource=None, \*\*kwargs)
+# This method is used to represent a surface in a 3-dimentional space. 
+# It can be used to plot functions over a 2-dimentional domain (the xy-plane), such as the density of a surface in the xy-plane or the potential created by a charge in a 2-dimentional space.
+# Some parameters of the plot_surface method are the following:
+# 1. X, Y: they are the coordinates of each Z value in the xy-plane.
+# 2. Z: the values that the plotted function takes.
+# 3. cmapColormap: maps colors to the surface patches.
+# 4. color: colour of the surface patches.
+
+# Electric Potential Created By a Proton Monopole and a Proton-Electron Dipole
+
+# We import matplotlib.pyplot
+# We import numpy in order to make some computations and define the domain of the function
+# We import mplot3d from mpl_toolkits to plot in 3D
+
+from mpl_toolkits import mplot3d
+import numpy as np
+import matplotlib.pyplot as plt
+
+# We define some variables
+
+K = 9*(10**9) # Electrostatic Constant 
+e = 1.6 * (10**(-19)) # Elemental charge
+a = 6*(10**(-11)) # Half of Hydrogen's radius
+b = 2*a # Hydrogen radius
+
+# We define our function of the electric potential dependent on x, y and q
+
+def V_3D(x, y, q):
+    return (K*q) / (((x**2)+(y**2))**(1/2)) 
+
+# Here define the figure to be plotted and the 3D axes in order to use them
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+# We define the domain of the graph
+
+x, y = np.meshgrid(np.linspace(-b, b, 24), np.linspace(-b, b, 24))
+
+# linspace function: creates sequences of evenly spaced values within a defined interval.
+# Essentally, you specify a starting point and an ending point of an interval, and then specify the total number of breakpoints you want within that interval (including the start and end points).
+
+# meshgrid function: returns coordinate matrices from coordinate vectors.
+
+# Here we state that the function to be plotted (the potential) is defined by the z-axis of the graph
+# This is because the potential funtion is actually in three dimention:
+## Two of them are spatial dimentions (the xy-plane)
+## The other one is the magnitude of the potential (z-axis)
+# Here we have to be careful, as we have to define a value for q (the charge)
+
+z = V_3D(x, y, e)
+
+# We make the graph 
+# Take into account that this is a surface graph
+
+ax.plot_surface(x, y, z, cmap='magma', edgecolor='none', lightsource=True)
+
+# We set the labels for the axes
+
+ax.set_xlabel('X (m)')
+ax.set_ylabel('Y (m)')
+ax.set_zlabel('Potential (V)')
+
+# We set a title for the graph
+
+ax.set_title('Electric Potential (Monopole)')
+
+# We show the graph
+
+plt.show()
+
+# Here we actually have the same example but with the dipole
+
+def Vd_3D(x, y, q1, q2):
+    return K*((q1 / ((((x+a)**2)+(y**2))**(1/2))) - (q2 / ((((x-a)**2)+(y**2))**(1/2))))
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+x, y = np.meshgrid(np.linspace(-b, b, 30), np.linspace(-b, b, 30))
+
+z = Vd_3D(x, y, e, e)
+
+ax.plot_surface(x, y, z, cmap='magma', edgecolor='none', lightsource=True)
+
+ax.set_xlabel('X (m)')
+ax.set_ylabel('Y (m)')
+ax.set_zlabel('Potential (V)')
+
+ax.set_title('Electric Potential (Dipole)')
+
+plt.show()
+
+# What is interesting of this secong graph, is that we can change the values of the charges intependently
+# In this way we can see how the field lines react when the charges are not equal
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+x, y = np.meshgrid(np.linspace(-b, b, 30), np.linspace(-b, b, 30))
+
+z = Vd_3D(x, y, 5*e, e)
+
+ax.plot_surface(x, y, z, cmap='plasma', edgecolor='none', lightsource=True)
+
+ax.set_xlabel('X (m)')
+ax.set_ylabel('Y (m)')
+ax.set_zlabel('Potential (V)')
+
+ax.set_title('Electric Potential (Dipole 2)')
+
+plt.show()
